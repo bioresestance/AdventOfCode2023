@@ -4,3 +4,4 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(Common)
 add_subdirectory(Day1)
+add_subdirectory(Day2)
