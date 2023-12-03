@@ -9,20 +9,23 @@
 
 bool isSymbol(char input)
 {
-    if (input >= '!' and input <= '/' and input != '.')
-    {
-        return true;
-    }
-    else
+    if (input == '.')
     {
         return false;
     }
+
+    if (std::isdigit(input))
+    {
+        return false;
+    }
+
+    return true;
 }
 
 /// @brief Checks if there is a symbol in either the given index or its adjacent spot.
 bool isAdjacentSymbol(const std::string &line, uint32_t index)
 {
-    if (line.size() < index)
+    if (index > line.size() - 1)
     {
         return false;
     }
@@ -37,7 +40,7 @@ bool isAdjacentSymbol(const std::string &line, uint32_t index)
         return true;
     }
 
-    if ((index != (line.size() - 1)) and isSymbol(line[index + 1]))
+    if ((index < (line.size() - 1)) and isSymbol(line[index + 1]))
     {
         return true;
     }
@@ -100,15 +103,16 @@ void part1()
                     symbol_found = true;
                 }
 
-                std::cout << current_line[j] << " ";
+                // std::cout << current_line[j] << " ";
             }
 
-            else if (symbol_found and !std::isdigit(current_line[j]))
+            else if (symbol_found and (!std::isdigit(current_line[j]) or current_line[j + 1] == '\0'))
             {
                 std::string new_number;
                 number >> new_number;
                 found_numbers.emplace_back(new_number);
                 symbol_found = false;
+                num_found = false;
                 std::cout << "Found next to : " << new_number << std::endl;
             }
             else
@@ -121,11 +125,11 @@ void part1()
         }
     }
 
-    // for (const auto &number : found_numbers)
-    // {
-    //     uint32_t int_num = std::stoi(number);
-    //     sum += int_num;
-    // }
+    for (const auto &number : found_numbers)
+    {
+        uint32_t int_num = std::stoi(number);
+        sum += int_num;
+    }
 
     printf("Part 01 - Sum is: %d\n", sum);
 }
